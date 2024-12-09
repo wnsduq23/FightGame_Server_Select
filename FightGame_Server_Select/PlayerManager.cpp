@@ -157,32 +157,29 @@ void PlayerManager::CreatePlayer(Session* newSession)
 void PlayerManager::HeaderANDMsgUnicast(UINT8 msgType, char* msg, int size, Player* pPlayer)
 {
 	stPACKET_HEADER header;
-	header.Code = 0x89;
+	header.Code = dfPACKET_HEADER_CODE;
 	header.Size = size;
 	header.Type = msgType;
 
-	NetworkManager::GetInstance()->EnqSendBufUnicast((char*)&header, HEADER_LEN, pPlayer->GetSession());
+	NetworkManager::GetInstance()->EnqSendBufUnicast((char*)&header, dfPACKET_HEADER_LEN, pPlayer->GetSession());
 	NetworkManager::GetInstance()->EnqSendBufUnicast(msg, size, pPlayer->GetSession());
 }
 
 void PlayerManager::HeaderANDMsgBroadcast(UINT8 msgType, char* msg, int size, Player* pExpPlayer)
 {
 	stPACKET_HEADER header;
-	header.Code = 0x89;
+	header.Code = dfPACKET_HEADER_CODE;
 	header.Size = size;
 	header.Type = msgType;
 
-	//if (_pNetworkManager == nullptr)
-	//	_pNetworkManager = NetworkManager::GetInstance();
-
 	if (pExpPlayer != nullptr)
 	{
-		NetworkManager::GetInstance()->EnqSendBufBroadcast((char*)&header, HEADER_LEN, pExpPlayer->GetSession());
+		NetworkManager::GetInstance()->EnqSendBufBroadcast((char*)&header, dfPACKET_HEADER_LEN, pExpPlayer->GetSession());
 		NetworkManager::GetInstance()->EnqSendBufBroadcast(msg, size, pExpPlayer->GetSession());
 	}
 	else
 	{
-	NetworkManager::GetInstance()->EnqSendBufBroadcast((char*)&header, HEADER_LEN);
+	NetworkManager::GetInstance()->EnqSendBufBroadcast((char*)&header, dfPACKET_HEADER_LEN);
 		NetworkManager::GetInstance()->EnqSendBufBroadcast(msg, size);
 	}
 }

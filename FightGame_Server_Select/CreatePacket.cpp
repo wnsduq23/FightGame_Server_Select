@@ -4,7 +4,7 @@ void Create_PACKET_HEADER(
 	stPACKET_HEADER& header,
 	UINT8 Size, UINT8 Type)
 {
-	header.Code = 0x89;
+	header.Code = dfPACKET_HEADER_CODE;
 	header.Size = Size;
 	header.Type = Type;
 }

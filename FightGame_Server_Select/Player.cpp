@@ -82,12 +82,12 @@ void Player::DeqFromRecvbufANDHandlePacket()
 		int useSize = _pSession->_recvBuf.GetUseSize();
 	while (useSize > 0)
 	{
-		if (useSize <= HEADER_LEN)
+		if (useSize <= dfPACKET_HEADER_LEN)
 			break;
 
 		stPACKET_HEADER header;
-		int peekRet = _pSession->_recvBuf.Peek((char*)&header, HEADER_LEN);
-		if (peekRet != HEADER_LEN)
+		int peekRet = _pSession->_recvBuf.Peek((char*)&header, dfPACKET_HEADER_LEN);
+		if (peekRet != dfPACKET_HEADER_LEN)
 		{
 			printf("Error! Func %s Line %d\n", __func__, __LINE__);
 			SetStateDead();
@@ -101,11 +101,11 @@ void Player::DeqFromRecvbufANDHandlePacket()
 			return;
 		}
 
-		if (useSize < HEADER_LEN + header.Size)
+		if (useSize < dfPACKET_HEADER_LEN + header.Size)
 			break;
 
-		int moveReadRet = _pSession->_recvBuf.MoveReadPos(HEADER_LEN);
-		if (moveReadRet != HEADER_LEN)
+		int moveReadRet = _pSession->_recvBuf.MoveReadPos(dfPACKET_HEADER_LEN);
+		if (moveReadRet != dfPACKET_HEADER_LEN)
 		{
 			printf("Error! Func %s Line %d\n", __func__, __LINE__);
 			SetStateDead();

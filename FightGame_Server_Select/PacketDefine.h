@@ -26,7 +26,7 @@
 
 #define dfPACKET_HEADER_CODE					0x89
 #pragma pack (push, 1)
-#define HEADER_LEN sizeof(stPACKET_HEADER)
+#define dfPACKET_HEADER_LEN						sizeof(stPACKET_HEADER)
 
 struct stPACKET_HEADER
 {
