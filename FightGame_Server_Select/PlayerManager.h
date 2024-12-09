@@ -88,7 +88,7 @@ private:
 	UINT8	_moveDirection;
 	UINT16	_x;
 	UINT16	_y;
-	INT8	_hp;
+	UINT8	_hp;
 	UINT8	_packet;
 	UINT8	_state;
 

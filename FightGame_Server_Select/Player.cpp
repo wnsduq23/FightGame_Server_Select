@@ -69,9 +69,8 @@ void Player::Move()
 
 void Player::TakeDamage(UINT8 damage)
 {
-	printf("%hhu\n", _hp);
 	_hp -= damage;
-	if (_hp <= 0)
+	if (_hp <= 0 || _hp > 100)
 	{
 		_hp = 0;
 		SetStateDead();
