@@ -214,42 +214,41 @@ void PlayerManager::ChkHitANDBroadcast(UINT8 attackType, UINT32 ID, UINT8 direct
 		return;
 	}
 
+	UINT16 minX, maxX, minY, maxY;
+
 	if (direction == dfPACKET_MOVE_DIR_LL)
 	{
-		UINT16 minX = x - rangeX;
-		UINT16 minY = y - rangeY;
-		UINT16 maxY = y + rangeY;
-		for (std::list<Player*>::iterator i = _playerList.begin(); i != _playerList.end(); i++)
-		{
-			if ((*i)->GetX() >= minX && (*i)->GetX() <= x &&
-				(*i)->GetY() >= minY && (*i)->GetY() <= maxY && ID != (*i)->GetID())
-			{
-				(*i)->TakeDamage(damage);
-				stPACKET_SC_DAMAGE packetSCDamage;
-				Create_PACKET_SC_DAMAGE(packetSCDamage, ID, (*i)->GetID(), (*i)->GetHp());
-				HeaderANDMsgBroadcast(dfPACKET_SC_DAMAGE, (char*)&packetSCDamage,
-					sizeof(stPACKET_SC_DAMAGE));
-			}
-		}
+		minX = x - rangeX;
+		maxX = x;
 	}
-
 	else if (direction == dfPACKET_MOVE_DIR_RR)
 	{
-		UINT16 maxX = x + rangeX;
-		UINT16 minY = y - rangeY;
-		UINT16 maxY = y + rangeY;
+		minX = x;
+		maxX = x + rangeX;
+	}
+	else
+	{
+		return; // 방향이 올바르지 않으면 처리하지 않음
+	}
 
-		for (std::list<Player*>::iterator i = _playerList.begin(); i != _playerList.end(); i++)
+	minY = y - rangeY;
+	maxY = y + rangeY;
+
+	for (auto i = _playerList.begin(); i != _playerList.end(); i++)
+	{
+		Player* player = *i;
+
+		if (player->GetX() >= minX && player->GetX() <= maxX &&
+			player->GetY() >= minY && player->GetY() <= maxY &&
+			ID != player->GetID())
 		{
-			if ((*i)->GetX() >= x && (*i)->GetX() <= maxX &&
-				(*i)->GetY() >= minY && (*i)->GetY() <= maxY && ID != (*i)->GetID())
-			{
-				(*i)->TakeDamage(damage);
-				stPACKET_SC_DAMAGE packetSCDamage;
-				Create_PACKET_SC_DAMAGE(packetSCDamage, ID, (*i)->GetID(), (*i)->GetHp());
-				HeaderANDMsgBroadcast(dfPACKET_SC_DAMAGE, (char*)&packetSCDamage,
-					sizeof(stPACKET_SC_DAMAGE));
-			}
+			player->TakeDamage(damage);
+
+			stPACKET_SC_DAMAGE packetSCDamage;
+			Create_PACKET_SC_DAMAGE(packetSCDamage, ID, player->GetID(), player->GetHp());
+
+			HeaderANDMsgBroadcast(dfPACKET_SC_DAMAGE,
+				reinterpret_cast<char*>(&packetSCDamage), sizeof(stPACKET_SC_DAMAGE));
 		}
 	}
 }
