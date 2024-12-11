@@ -234,7 +234,7 @@ void PlayerManager::ChkHitANDBroadcast(UINT8 attackType, UINT32 ID, UINT8 direct
 	minY = y - rangeY;
 	maxY = y + rangeY;
 
-	for (auto i = _playerList.begin(); i != _playerList.end(); i++)
+	for (std::list<Player*>::iterator i = _playerList.begin(); i != _playerList.end(); i++)
 	{
 		Player* player = *i;
 
